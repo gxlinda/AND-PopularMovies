@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="most_popular">Sort by most popular</string>
+    <string name="highest_rated">Sort by highest rated</string>
+
+    <string name="no_internet_connection">Please check your internet connection!</string>
+    <string name="no_movies">There are no movies to display</string>
+
+</resources>
