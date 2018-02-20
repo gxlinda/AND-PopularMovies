@@ -6,5 +6,5 @@ API you need a personal API key, which can be requested from the themoviedb.org 
 
 Once you obtain your key, you append it to your HTTP request as a URL parameter like so:
 http://api.themoviedb.org/3/movie/popular?api_key=[YOUR_API_KEY]
-Please enter your API key into onCreateLoader method's uriBuilder of MainActivity.java, 
-instead of "enter_your_API_key_here".
+
+Please enter your own API key into gradle.properties
