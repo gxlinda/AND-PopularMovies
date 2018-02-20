@@ -14,6 +14,7 @@ import hu.intellicode.popularmovies.Movie;
 
 /**
  * Created by melinda.kostenszki on 2018.02.17.
+ * In the making of this app I used materials from Udacity lessons
  */
 
 public class JSONParser {
@@ -21,8 +22,8 @@ public class JSONParser {
     public static final String RESULTS = "results";
     public static final String ID = "id";
     public static final String ORIGINAL_TITLE = "original_title";
-    public static final String TITLE = "title";
     public static final String POSTER_PATH = "poster_path";
+    public static final String BACKDROP_PATH = "backdrop_path";
     public static final String RELEASE_DATE = "release_date";
     public static final String VOTE_AVERAGE = "vote_average";
     public static final String OVERVIEW = "overview";
@@ -65,14 +66,14 @@ public class JSONParser {
                     originalTitle = results.optString(ORIGINAL_TITLE);
                 }
 
-                String title = "";
-                if (results.has(TITLE)) {
-                    title = results.optString(TITLE);
-                }
-
                 String posterPath = "";
                 if (results.has(POSTER_PATH)) {
                     posterPath = results.optString(POSTER_PATH);
+                }
+
+                String backdropPath = "";
+                if (results.has(BACKDROP_PATH)) {
+                    backdropPath = results.optString(BACKDROP_PATH);
                 }
 
                 String releaseDate = "";
@@ -90,7 +91,7 @@ public class JSONParser {
                     overview = results.optString(OVERVIEW);
                 }
 
-                Movie actualMovie = new Movie(id, originalTitle, title, posterPath, releaseDate, voteAverage, overview);
+                Movie actualMovie = new Movie(id, originalTitle, posterPath, backdropPath, releaseDate, voteAverage, overview);
 
                 movies.add(actualMovie);
             }

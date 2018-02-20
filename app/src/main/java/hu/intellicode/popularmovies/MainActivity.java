@@ -2,6 +2,7 @@ package hu.intellicode.popularmovies;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,12 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import hu.intellicode.popularmovies.utils.MovieLoader;
+
+/*
+    In the making of this app I used materials from Udacity lessons
+ */
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<Movie>> {
@@ -37,6 +41,11 @@ public class MainActivity extends AppCompatActivity implements
     private String ORDER_BUY_POPULAR = "popular";
     private String ORDER_BUY_TOP_RATED = "top_rated";
     private String orderBy = ORDER_BUY_POPULAR;
+    static final String ORIGINAL_TITLE = "original_title";
+    static final String RELEASE_DATE = "release_date";
+    static final String BACKDROP_URL = "backdrop_string";
+    static final String VOTE = "vote_average";
+    static final String OVERVIEW = "overview";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,32 +54,39 @@ public class MainActivity extends AppCompatActivity implements
 
         MOVIE_DB_REQUEST_URL = "https://api.themoviedb.org/3/movie";
 
+        //Assign the views
         recyclerView = findViewById(R.id.rv_movies);
         progressBar = findViewById(R.id.progress_bar);
         emptyStateTextView = findViewById(R.id.tv_empty_state);
         progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
-        final Context context = getApplicationContext();
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
 
         //listener for onClick
-        // //TODO WHY NOT WORKING??
         MovieAdapter.OnItemClickListener listener = new MovieAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Movie movie) {
-                Toast.makeText(context, "Item Clicked", Toast.LENGTH_LONG).show();
+                Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
+                detailsIntent.putExtra(ORIGINAL_TITLE, movie.getOriginalTitle());
+                detailsIntent.putExtra(RELEASE_DATE, movie.getReleaseDate());
+                detailsIntent.putExtra(BACKDROP_URL, movie.getBackdropUriString());
+                detailsIntent.putExtra(VOTE, movie.getVoteAverage());
+                detailsIntent.putExtra(OVERVIEW, movie.getOverview());
+                startActivity(detailsIntent);
+
             }
         };
 
-        movieAdapter = new MovieAdapter(movies, listener);//clickListener
+        movieAdapter = new MovieAdapter(this, movies, listener);
         recyclerView.setAdapter(movieAdapter);
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         // Get details on the currently active default data network
+        assert connMgr != null; //line suggested by Lint
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         // If there is a network connection, fetch data
@@ -131,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements
         movieAdapter.setMovieList(null);
     }
 
+    //Creates menu on the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

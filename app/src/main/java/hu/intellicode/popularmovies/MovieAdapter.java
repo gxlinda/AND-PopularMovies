@@ -15,7 +15,9 @@ import java.util.List;
 
 /**
  * Created by melinda.kostenszki on 2018.02.16.
- * Used guideline: https://antonioleiva.com/recyclerview-listener/
+ * Used guidelines:
+ * https://antonioleiva.com/recyclerview-listener/
+ * https://www.androidhive.info/2016/05/android-working-with-card-view-and-recycler-view/
  */
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
@@ -24,10 +26,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         void onItemClick(Movie item);
     }
 
+    private Context context;
     private List<Movie> movies;
     private final OnItemClickListener listener;
 
-    public MovieAdapter(List<Movie> movies, OnItemClickListener listener) {
+    public MovieAdapter(Context context, List<Movie> movies, OnItemClickListener listener) {
+        this.context = context;
         this.movies = movies;
         this.listener = listener;
     }
@@ -43,8 +47,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     // Involves populating data into the item through holder
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
+        final Movie movie = movies.get(position);
 
-        holder.bind(movies.get(position), listener);
+        String voteString = String.valueOf(movie.getVoteAverage());
+        holder.movieTitleView.setText("Rating: " + voteString + "/10");
+
+        Picasso.with(context)
+                .load(movie.getImageUriString())
+                .into(holder.moviePosterView);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                listener.onItemClick(movie);
+            }
+        });
     }
 
     // Returns the total count of items in the list
@@ -69,23 +84,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             movieTitleView = itemView.findViewById(R.id.tv_movie_title);
         }
 
-        public void bind(final Movie actualMovie, final OnItemClickListener listener) {
-
-            String voteString = String.valueOf(actualMovie.getVoteAverage());
-            movieTitleView.setText("Rating: " + voteString + "/10");
-            Picasso.with(itemView.getContext())
-                    .load(actualMovie.getImageUriString())
-                    .into(moviePosterView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    listener.onItemClick(actualMovie);
-                }
-            });
-        }
-
     }
-
-
 
     // Helper method to set the actual movie list into the recyclerview on the activity
     public void setMovieList(List<Movie> movieList) {

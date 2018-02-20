@@ -16,6 +16,7 @@ import hu.intellicode.popularmovies.Movie;
 
 /**
  * Created by melinda.kostenszki on 2018.02.17.
+ * In the making of this app I used materials from Udacity lessons
  */
 
 public class QueryUtils {

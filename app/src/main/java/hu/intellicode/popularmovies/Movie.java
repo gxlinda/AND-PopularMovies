@@ -4,26 +4,28 @@ import android.net.Uri;
 
 /**
  * Created by melinda.kostenszki on 2018.02.16.
+ * Model class that represents the avaialble infos of movies
  */
 
 public class Movie {
 
     private int id;
     private String originalTitle;
-    private String title;
     private String posterPath;
-    private String MOVIE_IMAGE_URL = "http://image.tmdb.org/t/p/original/";
+    private String MOVIE_POSTER_URL = "http://image.tmdb.org/t/p/w185/";
+    private String backdropPath;
+    private String MOVIE_BACKDROP_URL = "http://image.tmdb.org/t/p/w780/";
     private String releaseDate;
     private double voteAverage;
     private String overview;
 
 
 
-    public Movie( int id, String originalTitle, String title, String posterPath, String releaseDate, double voteAverage, String overview) {
+    public Movie(int id, String originalTitle, String posterPath, String backdropPath, String releaseDate, double voteAverage, String overview) {
         this.id = id;
         this.originalTitle = originalTitle;
-        this.title = title;
         this.posterPath = posterPath;
+        this.backdropPath = backdropPath;
         this.releaseDate = releaseDate;
         this.voteAverage = voteAverage;
         this.overview = overview;
@@ -45,12 +47,20 @@ public class Movie {
         this.originalTitle = originalTitle;
     }
 
-    public String getTitle() {
-        return title;
+    public String getBackdropPath() {
+        return backdropPath;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
+    public String getBackdropUriString() {
+        Uri baseUri = Uri.parse(MOVIE_BACKDROP_URL);
+        Uri.Builder backdropUri = baseUri.buildUpon();
+        backdropUri.appendEncodedPath(backdropPath);
+        String backdropUriString = backdropUri.toString();
+        return backdropUriString;
     }
 
     public String getPosterPath() {
@@ -62,7 +72,7 @@ public class Movie {
     }
 
     public String getImageUriString() {
-        Uri baseUri = Uri.parse(MOVIE_IMAGE_URL);
+        Uri baseUri = Uri.parse(MOVIE_POSTER_URL);
         Uri.Builder imageUri = baseUri.buildUpon();
         imageUri.appendEncodedPath(posterPath);
         String imageUriString = imageUri.toString();
