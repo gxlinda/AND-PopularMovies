@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
         Uri baseUri = Uri.parse(MOVIE_DB_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendPath(orderBy);
-        uriBuilder.appendQueryParameter("api_key", "97c2aff97d161a6e39345920ae2b84f4");
+        uriBuilder.appendQueryParameter("api_key", "enter_your_API_key_here");
 
         return new MovieLoader(this, uriBuilder.toString());
     }
