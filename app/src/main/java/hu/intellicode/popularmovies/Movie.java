@@ -2,11 +2,14 @@ package hu.intellicode.popularmovies;
 
 import android.net.Uri;
 
+import org.parceler.Parcel;
+
 /**
  * Created by melinda.kostenszki on 2018.02.16.
  * Model class that represents the avaialble infos of movies
+ * Parceler usage based on this guideline: https://guides.codepath.com/android/Using-Parceler
  */
-
+@Parcel
 public class Movie {
 
     private int id;
@@ -19,7 +22,10 @@ public class Movie {
     private double voteAverage;
     private String overview;
 
+    //This empty constructor is needed by the Parceler library
+    public Movie() {
 
+    }
 
     public Movie(int id, String originalTitle, String posterPath, String backdropPath, String releaseDate, double voteAverage, String overview) {
         this.id = id;

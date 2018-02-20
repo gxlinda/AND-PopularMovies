@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,7 @@ import hu.intellicode.popularmovies.utils.MovieLoader;
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<Movie>> {
 
+    private static final String API_KEY = BuildConfig.API_KEY;
     private String MOVIE_DB_REQUEST_URL;
     private static final int ID_MOVIE_LOADER = 13;
     private List<Movie> movies = new ArrayList<>();
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements
     static final String BACKDROP_URL = "backdrop_string";
     static final String VOTE = "vote_average";
     static final String OVERVIEW = "overview";
+    static final String MOVIE_DETAILS = "movie_details";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +73,8 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(Movie movie) {
                 Intent detailsIntent = new Intent(MainActivity.this, DetailsActivity.class);
-                detailsIntent.putExtra(ORIGINAL_TITLE, movie.getOriginalTitle());
-                detailsIntent.putExtra(RELEASE_DATE, movie.getReleaseDate());
-                detailsIntent.putExtra(BACKDROP_URL, movie.getBackdropUriString());
-                detailsIntent.putExtra(VOTE, movie.getVoteAverage());
-                detailsIntent.putExtra(OVERVIEW, movie.getOverview());
+                detailsIntent.putExtra(MOVIE_DETAILS, Parcels.wrap(movie));
                 startActivity(detailsIntent);
-
             }
         };
 
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements
         Uri baseUri = Uri.parse(MOVIE_DB_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendPath(orderBy);
-        uriBuilder.appendQueryParameter("api_key", "enter_your_API_key_here");
+        uriBuilder.appendQueryParameter("api_key", API_KEY);
 
         return new MovieLoader(this, uriBuilder.toString());
     }
